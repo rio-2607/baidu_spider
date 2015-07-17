@@ -51,16 +51,13 @@ class BaiduSpider(object):
             # 找到左边内容到的跟节点
             base_div = soup.select("#content_left")[0] # base_div_list是一个列表
 
-             # 获取所有的字节点的信息
-            children = []
+  
             childs = base_div.children
             for child in childs:
                 # isinstance(child,bs4.element.Tag) 用来过滤掉\n
                 # 'c-container' in child['class'] 用来过滤掉广告
                 # child.div 过滤掉其他的干扰
                 if isinstance(child,bs4.element.Tag) and child.div and child.get('class',None) and 'c-container' in child['class']:
-                    children.append(child)
-
                     # 获取到title所在的tag
                     # title所在的class标签为class=t
                     title = child.select(".t")[0]
@@ -71,7 +68,6 @@ class BaiduSpider(object):
                     # 查找abstract所在的tag
                     # abstract坐在的class标签是class=c-abstract
                     abstract = child.select(".c-abstract")
-                    # print type(abstract),len(abstract)
                     # 如果没有找到c-abstract标签，则试着找下.c-span18标签
                     if 0 == len(abstract):
                         abstract = child.select(".c-span18")
@@ -96,4 +92,3 @@ class BaiduSpider(object):
 if '__main__' == __name__:
     baidu_spider = BaiduSpider("电子科技大学",2)
     baidu_spider.start()
-
